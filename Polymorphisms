@@ -1,0 +1,254 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+import java.util.Scanner.*;
+
+class Ideone
+{
+	public static void main (String[] args)
+	{
+		Scanner s = new Scanner(System.in);
+		Shape[] shapes = new Shape[3];
+		shapes[0] = new Circle();
+		shapes[1] = new Rectangle();
+		shapes[2] = new Triangle();
+		
+		System.out.println("Enter height for rectangle: ");
+		shapes[1].setHeight(s.nextDouble);
+		System.out.println("Enter width for rectangle: ");
+		shapes[1].setWidth(s.nextDouble);
+		
+		System.out.println("Enter x value of center for circle: ");
+		shapes[0].center.setX(s.nextInt);
+		System.out.println("Enter Y value of center for circle: ");
+		shapes[0].center.setY(s.nextInt);
+		System.out.println("Enter radius for circle: ");
+		shapes[0].setRadius(s.nextDouble);
+		
+		System.out.println("Enter height for triangle: ");
+		shapes[2].setHeight(s.nextDouble);
+		System.out.println("Enter base for triangle: ");
+		shapes[2].setBase(s.nextDouble);
+		System.out.println("Enter side 1 for triangle: ");
+		shapes[2].setSideA(s.nextDouble);
+		System.out.println("Enter side 2 for triangle: ");
+		shapes[2].setSideB(s.nextDouble);
+		System.out.println("Enter side 3 for triangle: ");
+		shapes[2].setSideC(s.nextDouble);
+		
+		
+		for(int i = 0; i < shapes.length; i++)
+		{
+			System.out.println(shapes[i].toStr());
+			System.out.println(shapes[i].area());
+			System.out.println(shapes[i].perimeter());
+		}
+	}
+}
+class Shape
+{
+	private final int NUMBER_OF_SIDES;
+	
+	public double area()
+	{
+		return 0;
+	}
+	public double perimeter()
+	{
+		return 0;
+	}
+}
+
+class Circle extends Shape
+{
+	private int radius;
+	private Point center;
+	
+	public int getRadius()
+	{
+		return radius;
+	}
+	public void setRadius(int newR)
+	{
+		radius = newR;
+	}
+	public Point getCenter()
+	{
+		return center;
+	}
+	public void setCenter(Point newC)
+	{
+		this.center = newC;
+	}
+	
+	public static String toStr()
+	{
+		return "Circle with 1 side, radius = " + getRadius() + " and center = (" + center.getX() + ", " + center.getY();
+	}
+	
+	public String perimeter(double radius)
+	{
+		return 2*radius + "pi";
+	}
+	public double area(double radius)
+	{
+		return radius*radius + "pi";
+	}
+}
+
+class Point
+{
+	private int x;
+	private int y;
+	
+	public Point()
+	{
+	
+	}
+	public Point(int newX, int newY)
+	{
+		setX(newX);
+		setY(newY);
+	}
+	
+	public int getX()
+	{
+		return x;
+	}
+	public void setX(int newX)
+	{
+		x = newX;
+	}
+	public int getY()
+	{
+		return y;
+	}
+	public void setY(int newY)
+	{
+		y = newY;
+	}
+}
+
+class Rectangle extends Shape
+{
+	private int width;
+	private int height;
+	
+	public Rectangle()
+	{
+		
+	}
+	public Rectangle(int w, int h)
+	{
+		setWidth(w);
+		setHeight(h);
+	}
+	
+	public int getWidth()
+	{
+		return width;
+	}
+	public void setWidth(int newW)
+	{
+		width = newW;
+	}
+	public int getHeight()
+	{
+		return height;
+	}
+	public void setHeight(int newH)
+	{
+		height = newH;
+	}
+	
+	public static String toStr()
+	{
+		return "Rectangle with 4 sides, length = " + getHeight + ", width = " + getWidth();
+	}
+	
+	public double area(double width, double length)
+	{
+		return width*height;
+	}
+	public double perimeter(double width, double length)
+	{
+		return (2*width) + (2*height);
+	}
+}
+
+class Triangle
+{
+	private int sideA;
+	private int sideB;
+	private int sideC;
+	private int height;
+	private int base;
+	
+	public Triangle()
+	{
+		
+	}
+	public Triangle(int a, int b, int c, int h, int b2)
+	{
+		setSideA(a);
+		setSideB(b);
+		setSideC(c);
+		setHeight(h);
+		setBase(b2);
+	}
+	
+	public int getSideA()
+	{
+		return sideA;
+	}
+	public void setSideA(int newA)
+	{
+		sideA = newA;
+	}
+	public int getSideB()
+	{
+		return sideB;
+	}
+	public void setSideB(int newB)
+	{
+		sideB = newB;
+	}
+	public int getSideC()
+	{
+		return sideC;
+	}
+	public void setSideC(int newC)
+	{
+		sideC = newC;
+	}
+	public int getHeight()
+	{
+		return height;
+	}
+	public void setHeight(int newH)
+	{
+		height = newH;
+	}
+	public int getBase()
+	{
+		return base;
+	}
+	public void setBase(int newB)
+	{
+		base = newB;
+	}
+	
+	public static toStr()
+	{
+		return "Triangle with 3 sides, side length = " + getSideA + ", " + getSideB + ", " + getSideC + ", base = " + getBase() + ", height = " + getHeight();
+	}
+	
+	public double area(double height, double base)
+	{
+		return (height*base)/2;
+	}
+	public double perimeter(double a, double b, double c)
+	{
+		return a + b + c;
+	}
+}
