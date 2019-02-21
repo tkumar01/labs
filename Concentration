@@ -1,0 +1,486 @@
+// Tanish Kumar, per 4 APCS Kim
+import java.util.Random;
+import java.util.Scanner;
+
+public class Card {
+
+   // Instance Variables
+   // 1=A, 2-9, 10=X, 11=J, 12=Q, 13=K
+   // Error value = 0 and " " (space, not empty String!)
+   private int face;
+
+   // 1=S, 2=H, 3=C, 4=D
+   // Error value = 0 and " " (space, not empty String!)
+   private int suit;
+
+   // Constructors
+   public Card(){
+        face = 0;
+	suit = "";
+   }
+   public Card(int face, int suit){
+       // Complete this code.
+	this.face = face;
+	this.suit = suit;
+   }
+   // Getters/Setters
+   public int getFace()
+   {
+	return face;
+   }	
+   public void setFace(int newFace)
+   {
+	face = newFace;
+   }
+
+   public String getSuit()
+   {
+	return suit;
+   }	
+   public void setSuit(int newSuit)
+   {
+	suit = newSuit;
+   }
+
+   // Static methods
+   public static String convertFace(int face){
+	if(face == 1)
+	    return "A";	
+	if(face == 2)
+	    return "2";
+	if(face == 3)
+	    return "3";
+	if(face == 4)
+	    return "4";
+	if(face == 5)
+	    return "5";
+	if(face == 6)
+	    return "6";
+	if(face == 7)
+	    return "7";
+	if(face == 8)
+	    return "8";
+	if(face == 9)
+	    return "9";
+	if(face == 10)
+	    return "10";
+	if(face == 11)
+	    return "J";
+	if(face == 12)
+	    return "Q";
+	if(face == 13)
+	    return "K";
+	else
+	    return "error";
+   }
+
+   public static int convertFace(String face){
+        if(face.compareTo("A"))
+	    return 1;	
+	if(face.compareTo("2"))
+	    return 2;
+	if(face.compareTo("3"))
+	    return 3;
+	if(face.compareTo("4"))
+	    return 4;
+	if(face.compareTo("5"))
+	    return 5;
+	if(face.compareTo("6"))
+	    return 6;
+	if(face.compareTo("7"))
+	    return 7;
+	if(face.compareTo("8"))
+	    return 8;
+	if(face.compareTo("9"))
+	    return 9;
+	if(face.compareTo("10"))
+	    return 10;
+	if(face.compareTo("J"))
+	    return 11;
+	if(face.compareTo("Q"))
+	    return 12;
+	if(face.compareTo("K"))
+	    return 13;
+	else
+	    return 0;
+
+   }
+  
+   public static String convertSuit(int suit)
+   {
+    if(suit == 1)
+	    return "S";
+	if(suit == 2)
+	    return "H";
+	if(suit == 3)
+	    return "C";
+	if(suit == 4)
+	    return "D";
+	else
+	    return "error";
+
+   }
+
+   public static int convertSuit(String suit)
+   {
+        if(suit.compareTo("S"))
+	    return 1;
+	if(suit.compareTo("H"))
+	    return 2;
+	if(suit.compareTo("C"))
+	    return 3;
+	if(suit.compareTo("D"))
+	    return 4;
+	else
+	    return 0;
+
+   }
+
+   // Nonstatic methods
+   public String toString(){
+       return getFace() + getSuit();
+   }
+ 
+   public boolean equals(Card c){
+       if(c.getFace() == this.getFace() && c.getSuit() == this.getSuit())
+	    return true;
+	else
+	    return false;
+   }
+}
+
+
+
+
+public class Deck
+{
+   // Instance variables
+   private Card[] cards = new Card[52];
+   // This is your deck position telling you which cards have been dealt.
+   private int nextCard=0;
+   // Constructors. Create the actual 52 cards, AS-KD
+   public Deck()
+   {
+    	for(int i = 0; i < 13; i++)
+    	{
+    		cards[i] = new Card(1, i + 1);
+    	}
+    	for(int j = 0; j < 13; j++)
+    	{
+    		cards[j] = new Card(2, i + 14)
+    	}
+    	for(int h = 0; h < 13; h++)
+    	{
+    		cards[h] = new Card(3, i + 27);
+    	}
+    	for(int g = 0; g < 13; g++)
+    	{
+    		cards[g] = new Card(4, i + 40);
+    	}
+   }
+   
+   // Nonstatic methods
+   public void shuffle()
+   {
+       Random rand = new Random();
+       int randomIndex= rand.nextInt(52);
+       int temp = 0;
+       for(int i = 0; i < 52; i++)
+       {
+       		temp = cards[i];
+       		cards[i] = cards[randomIndex];
+       		cards[randomIndex] = temp;
+       }
+   }
+   
+   // Print out each 2 character card on the same line separated by a single space.
+   public void print()
+   {
+   		for(int i = 0; i < 51; i++)
+   		{
+   			System.out.print(cards[i].toString() + " ");
+   		}
+   }
+   
+   // Return a pointer to the next card, and move to the next.
+   public Card next()
+   {
+       nextCard++;
+       if(nextCard = 52)
+       {
+       		nextCard = 0;
+       		return cards[51];
+       }
+       else
+       {
+       		return cards[nextCard - 1];
+       }
+   }
+}
+
+
+
+
+
+
+public class Board
+{
+   // Instance variables
+   private Card[][] board;
+   private boolean[][] isHidden;
+   
+   // Constructors
+   public Board()
+   {
+		  board[] = new Card[0];
+   }
+   public Board(int rows, int columns)
+   {
+       board[][] = new Card[rows][columns];
+       for(int i = 0; i < rows; i++)
+       {
+    		for(int j = 0; j < columns; j++)
+    		{
+    			isHidden[i][j] = true;
+    		}
+       }
+   }
+   
+   // Nonstatic methods
+   public void printBoard()
+   {
+       // Print board with row col headers
+       // You may assume board is set up.
+	System.out.print(" ");
+	for(int c = 0; c < board[0].length; c++)
+		{
+			if(c < 10)
+				System.out.print("  " + c);
+			else
+				System.out.print(" " + c);
+		}
+	System.out.println();
+       for(int i= 0; i < board.length; i++)
+       {
+       		for(int j = 0; j < board[i].length; j++)
+       		{
+       			if(isHidden[i][j])
+       			{
+       				System.out.println(" ?? ");
+       			}
+       			else if(isHidden[i][j] == false)
+       			{
+       				System.out.println(board[i][j].toString());
+       			}
+       			else
+       				System.out.println("  ");
+       		}
+       }
+   }
+   
+   // Place cards from argument Deck d onto the Board, left to right, top down.
+   // If the Board is bigger than the deck, then you should have null in empty spots.
+   // If the Board is smaller than the deck, then you should stop placing cards 
+   // after the last spot.
+   public void fillBoard(Deck d)
+   {
+        for(int i = 0; i < board.length; i++)
+       {
+		for(int j  = 0; j < board[j].length; j++)
+		{
+			board[i][j] = d.next();
+		}
+       }
+
+   }
+   
+   // Set all cards face up. This method does not print anything.
+   public void unhide()
+   {
+       for(int i = 0; i < isHidden.length; i++)
+       {
+    		for(int j = 0; j < isHidden[i].length; j++)
+    		{
+    			isHidden[i][j] = false;
+    		}
+       }
+   }
+   
+   // Set one card face up.
+   public void unhide(int row, int column)
+   {
+       isHidden[row][column] = true;
+   }
+   
+   // Set all cards face down. This method does not print anything.
+   public void hide()
+   {
+       for(int i = 0; i < isHidden.length; i++)
+       {
+    		for(int j = 0; j < isHidden[i].length; j++)
+    		{
+    			isHidden[i][j] = true;
+    		}
+       }
+   }
+   
+   // Set one card face down.
+   public void hide(int row, int column)
+   {
+       isHidden[row][column] = true;
+   }
+   
+   // Place argument Card c onto the Board at spot row,column.
+   public void place(Card c, int row, int column)
+   {
+       board[row][column] = c;
+   }
+   
+   // Return a pointer to the card at spot row,column on the Board. 
+   // Do not remove the card from the Board.
+   public Card get(int row, int column)
+   {
+       Card rV = board[row][column];
+       return rV;
+   }
+   
+   // Return a pointer to the card at spot row,column on the Board.
+   // Remove the card from the Board.
+   public Card remove(int row, int column)
+   {
+       Card rV = board[row][column];
+       board[row][column] = null;
+       return rV;
+   }
+   
+   // Count the number of open spots on the Board.
+   // Open = no card is placed at that spot.
+   public int openSpots()
+   {
+   		int rV = 0;
+    	for(int i = 0; i < board.length; i++)
+    	{
+    		for(int j = 0; j < board[i].length; j++)
+    		{
+    			if(board[i][j] == null)
+    			{
+    				rV++;
+    			}
+    		}
+    	}
+    	return rV;
+   }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Concentration
+{
+
+   // newBoard() should return a new Board that is already set up to play concentration.
+   // IE, make, shuffle, deal a deck. Etc.
+   //Class Variables
+   private static String turn;
+   private static int A = 0;
+   private static int B = 0;
+   
+   //Other Methods
+   public static Board newBoard()
+   {
+       // Complete this code.
+       Deck d = new Deck();
+       Board b = new Board();
+       d.shuffle();
+       b.fillBoard(d);
+       b.hide();
+       return b;
+   }
+   
+   // Things to consider:
+   // Keep track of whose turn it is, playerA or B.
+   // Keep track of score = number of matches.
+   // Play as long as there are cards on the board.
+   // If player matches, they get to go again.
+   public static void play()
+   {
+       Board b = newBoard();
+       Scanner s = new Scanner(System.in);
+       while(b.openSpots() > 0)
+       {
+           System.out.println("Player A's score = " + A);
+           System.out.println("Player B's score = " + B);
+           System.out.println("Player " + turn + "'s turn");
+           b.printBoard();
+           System.out.println("Enter Row Number: ");
+           int row = s.nextInt();
+           System.out.println("Enter Column Number: ");
+           int column = s.nextInt();
+           b.unhide(row,column);
+           
+           b.printBoard();
+           System.out.println();
+           System.out.println("Enter Row Number: ");
+           int row1 = s.nextInt();
+           System.out.println("Enter Column Number: ");
+           int column1 = s.nextInt();
+           b.unhide(row1, column1);
+           b.printBoard();
+           
+           if(b.get(row, column) = b.get(row1, column1))
+           {
+           		b.remove(row, column);
+           		b.remove(row1, column1);
+           		System.out.println("Its a match!");
+           		if(turn.compareTo("A");
+           		{
+           			A++;
+           		}
+           		else
+           		{
+           			B++;
+           		}
+           }
+           else
+           {
+           		System.out.println("Not a match");
+           }
+           
+       }
+   } // end play()
+   
+   
+   public static void pressEnterToContinue()
+   {
+       // Complete this code.
+       System.out.println("Press enter to continue.");
+       try
+       {
+           System.in.read();
+       }
+       catch (Exception e)
+       {
+
+       }
+   }
+}
+
+
+
+
+
