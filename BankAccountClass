@@ -1,0 +1,205 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Ideone
+{
+	public static void main (String[] args)
+	{
+		// TASK 1
+		BankAccount me = ("Tanish Kumar", (0, 0), "Wells Fargo" );
+		BankAccount kim = ("Mr. Kim", (0, 0), "BofA");
+		BankAccount manoj = ("Manoj,", (0, 0), "Chase");
+		
+		// TASK 2
+		for(int i = 0; i < 101; i++)
+		{
+			if(i%3 == 1)
+			{
+				me.balance += i;
+			}
+			else if(i%3 == 0)
+			{
+				kim.balance += i;
+			}
+			else if(i%3 == 0)
+			{
+				manoj.balance += i;
+			}
+		}
+		
+		// TASK 3
+		me.balance.dollars -= 20;
+		kim.balance.dollars += 10;
+		manoj.balance.dollars += 10;
+		
+		// TASK 4
+		// couldn't figure this one out
+	}
+}
+
+class BankAccount
+{
+	// Class Variables
+	private static int numberOfTransactions;
+	private static int numberOfBankAccounts;
+	private static int nextAcctNumber = 10000000;
+	
+	// Instance Variables
+	String firstName, lastName, middleInitial;
+	Money balance;
+	String bankName;
+	int acctNumber;
+	
+	// Constructors
+	public BankAccount()
+	{
+		firstName = "";
+		lastName = "";
+		middleInitial = "";
+		balance = new Money(0, 0);
+		bankName = "";
+		acctNumber = nextAccountNumber;
+		nextAcctNumber++;
+	}
+	public BankAccount(String first, String last, String middle, Money b, String bName)
+	{
+		firstName = first;
+		lastName = last;
+		middleInitial = middle;
+		balance = b;
+		bankName = bName;
+		acctNumber = nextAccountNumber;
+		nextAcctNumber++;
+	}
+	public BankAccount(String name, Money b, String bName)
+	{
+		firstName = name.substring(0, name.indexOf(" "));
+		String newName = name.substring(name.indexOf(" "));
+		middleInitial = name.substring(name.indexOf(" "), newName.indexOf(" "));
+		String newName2 = newName.substring(newName.indexOf(" "), name.length());
+		lastName = newName2.substring(newName2.indexOf(" "));
+		balance = b;
+		bankName = bName;
+		acctNumber = nextAccountNumber;
+		nextAcctNumber++;
+	}
+	
+	// Getters & Setters
+	public String getFirstName()
+	{
+		return firstName;
+	}
+	public String getLastName()
+	{
+		return lastName;
+	}
+	public String getMiddleInitial()
+	{
+		return middleInitial;
+	}
+	public Money getBalance()
+	{
+		return balance;
+	}
+	public String getBankName()
+	{
+		return bankName;
+	}
+	public void setFirstName(String newFirst)
+	{
+		firstName = newFirst;
+	}
+	public void setLastName(String newLast)
+	{
+		lastName = newLast;
+	}
+	public void setMiddleInitial(String newMiddle)
+	{
+		middleInitial = newMiddle;
+	}
+	public void setBankName(String newBank)
+	{
+		bankName = newBank;
+	}
+	
+	public void deposit(Money depositAmount)
+	{
+		balance.getDollars() += depositAmount.getDollars();
+		balance.getCents() += depositAmount.getDollars();
+		while(balance.getCents() > 100)
+		{
+			balance.getCents() -= 100;
+			balance.getDollars()++;
+		}
+		numberOfTransactions++;
+	}
+	public void withdraw(Money withdrawAmount)
+	{
+		balance.getDollars() -= depositAmount.getDollars();
+		balance.getCents() -= depositAmount.getDollars();
+		while(balance.getCents() < 0)
+		{
+			balance.getCents() += 100;
+			balance.getDollars()--;
+		}
+		numberOfTransactions++;
+	}
+	
+	// Other Methods
+	public String toStr()
+	{
+		String rV = "";
+		rV += bankName + " bank account for: " + fullName() +"\n" + "Balance: " + balance.toStr();
+		return rV;
+	}
+	public String fullName()
+	{
+		String rV = "";
+		rV += firstName + " " + middleInitial + ". " + lastName;
+		return rV;
+	}
+}
+
+class Money
+{
+	// Instance Variables
+	int dollars; // m.dollars
+	int cents; // m.cents
+	String currency; // "USD"
+	
+	// Constructors
+	public Money()
+	{
+		
+	}
+	public Money(int d, int c)
+	{
+		dollars = d1;
+		cents = c;
+	}
+	
+	// Getters & Setters
+	public int getDollars()
+	{
+		return dollars;
+	}
+	public void setDollars(int newDollars)
+	{
+		dollars = newDollars;
+	}
+	public int getCents()
+	{
+		return cents;
+	}
+	public void setCents(int newCents)
+	{
+		cents = newCents;
+	}
+	
+	// Other Method
+	public String toStr()
+	{
+		return "$" + dollars + "." + cents;
+	}
+}
