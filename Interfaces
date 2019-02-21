@@ -1,0 +1,1003 @@
+/* package whatever; // don't place package name! */
+
+import java.util.Random.*;
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+/* Name of the class has to be "Main" only if the class is public. */
+class Ideone
+{
+	public static void main (String[] args)
+	{
+		// TASK 2
+		Printable[] arr = new Printable[4];
+		arr[0] = new Card(6, 3);
+		arr[1] = new Board(3, 3);
+		arr[2] = new Rectangle(1, 4);
+		arr[3] = new BankAccount("Tanish", "Kumar", new Money(500, 2), "Wells Fargo");
+		
+		Card a = (Card)arr[0];
+		Board b = (Board)arr[1];
+		Rectangle c = (Rectangle)arr[2];
+		BankAccount d = (BankAccount)arr[3];
+		
+		Deck e = new Deck();
+		e.shuffle();
+		b.fillBoard(e);
+		
+		arr[0] = a;
+		arr[1] = b;
+		arr[2] = c;
+		arr[3] = d;
+		for(int i = 0; i < 4; i++)
+		{
+			arr[i].print();
+			System.out.println();
+		}
+		
+		// TASK 4
+		GamePiece[][] gp = new GamePiece[5][];
+		for(int i = -2; i <= 2; i++)c
+		{
+			gp[i+2] = new GamePiece[4 - Math.abs(i)];
+			for(int j = 0; j < gp[i+2].length; j++)
+			{
+				if(i + 2 == 0 && j == 1)
+				{
+					gp[i+2][j] = new GamePiece("Hi");
+				}
+				else
+				{
+					gp[i+2][j] = new GamePiece("" + (i+2) + j);
+				}
+				gp[i+2][j].print();
+				// System.out.print(" ");
+			}
+			System.out.println();
+		}
+		
+		// TASK 5
+		War.play();
+		Concentration.play();
+	}
+}
+
+interface Printable
+{
+	public void print();
+}
+
+interface toString2
+{
+	public String toString2();
+}
+
+class GamePiece implements Printable, toString2
+{
+	private final String TWO_CHAR;
+	
+	public GamePiece()
+	{
+		TWO_CHAR = "  ";
+	}
+	public GamePiece(String newTC)
+	{
+		TWO_CHAR = (newTC + " ").substring(0, 2);
+	}
+	
+	public void print()
+	{
+		System.out.println(TWO_CHAR);
+	}
+	public String toString2()
+	{
+		return TWO_CHAR.substring(0, 2);
+	}
+}
+
+
+class BankAccount implements Printable
+{
+    // Class (static) variables
+    private static int numberOfTransactions = 0;
+    private static int numberOfBankAccounts = 0;
+    private static int nextAccountNumber = 10000000;
+ 
+    // Instance (nonstatic) variables
+    private String firstName, lastName;
+    // All BankAccounts will start off with $0.00
+    private Money balance = new Money(0,0);
+    private String bankName;
+    // 8 digit acct numbers, not <8 digits. ex, 1000 0000
+    private int accountNumber;
+    
+    // Constructors
+    public BankAccount()
+    {
+        firstName = "";
+        lastName = "";
+        // Not needed since every object starts with $0. See declaration.
+        // balance = new Money(0,0);
+        bankName = "";
+        numberOfBankAccounts++;
+        if(numberOfBankAccounts==23)
+        {
+            // Notice that this counts as a transaction
+            System.out.println("Congrats 23rd acct bonus");
+            deposit(new Money(100,0));
+        }
+        accountNumber = nextAccountNumber;
+        nextAccountNumber++;
+    }
+    public BankAccount(String first, String last, Money b, String bName)
+    {
+        firstName = first;
+        lastName = last;
+        // balance = b;
+        deposit(b);
+        bankName = bName;
+        numberOfBankAccounts++;
+        if(numberOfBankAccounts==23)
+        {
+            // Notice this counts as a transaction
+            System.out.println("Congrats 23rd acct bonus");
+            deposit(new Money(100,0));
+        }
+        accountNumber = nextAccountNumber;
+        nextAccountNumber++;
+    }
+            
+    // Getters/Setters
+    public static int getNumberOfTransactions()
+    {
+        return numberOfTransactions;
+    }
+    public static int getNumberOfBankAccounts()
+    {
+        return numberOfBankAccounts;
+    }
+    public String getFirstName()
+    {
+        return firstName;
+    }
+    public void setFirstName(String first)
+    {
+        firstName = first;
+    }
+    public String getLastName()
+    {
+        return lastName;
+    }
+    public void setLastName(String last)
+    {
+        lastName = last;
+    }
+    // No setBalance()
+    public Money getBalance()
+    {
+        return balance;
+    }
+    public String getBankName()
+    {
+        return bankName;
+    }
+    public void setBankName(String bName)
+    {
+        bankName = bName;
+    }
+    
+    // Other Methods
+    public void deposit(Money depositAmount)
+    {
+        balance.add(depositAmount);
+        numberOfTransactions++;
+    }
+    public void withdraw(Money withdrawlAmount)
+    {
+        balance.sub(withdrawlAmount);
+        numberOfTransactions++;
+    }
+    
+    //"Bank of America bank account for Bob Cheung: $10.02"
+    public String toString()
+    {
+        return bankName + " bank account for " + firstName + " " + lastName + ": " + balance.toString();
+    }
+    
+    public void print()
+    {
+    	System.out.println(toString());
+    }
+    
+}
+
+class Money implements Printable
+{
+    // Instance Variables
+    private int dollars, cents;
+    private String currency;
+    
+    // Constructors
+    public Money()
+    {
+    	
+    }
+    public Money(int d, int c)
+    {
+        setDollars(d);
+        setCents(c); // All work done here
+    }
+    public Money(int d, int c, String cur)
+    {
+        setDollars(d);
+        setCents(c); // All work done here
+        currency = cur;
+    }
+    public Money(double m)
+    {
+        //m can be for ex, 10.25
+        int amt = (int)(m * 100);//1025
+        setDollars(0);
+        setCents(amt);
+    }
+    // Getters / Setters
+    public int getDollars()
+    {
+        return dollars;
+    }
+    public void setDollars(int newDollars)
+    {
+        dollars = newDollars;
+    }
+    public int getCents()
+    {
+        return cents;
+    }
+    // 10d and 150c
+    // 10d and -15c
+    // -10d and 150c
+    // -10d and -150
+    public void setCents(int newCents)
+    {
+        cents = newCents;
+        if(dollars >=0)
+        {
+            while(cents >= 100)
+            {
+                cents -= 100;
+                dollars++;
+            }
+            while(cents < 0)
+            {
+                cents += 100;
+                dollars--;
+            }
+        }
+        else 
+        {
+            while(cents > 0)
+            {
+                cents -= 100;
+                dollars++;
+            }
+            while(cents <= -100)
+            {
+                cents += 100;
+                dollars--;
+            }
+        }
+    }
+    
+    // Other Methods
+    // Convention: 
+    // Verb methods such as add() will change the object.
+    // Noun methods such as sum() will return a new object.
+
+    public String toString()
+    {
+        // -$10.25
+        String rv = "$";
+        if(isNegative())
+            rv = "-$";
+        if(Math.abs(cents) >= 10)
+            rv = rv + Math.abs(dollars) + "." + Math.abs(cents);
+        else
+            rv = rv + Math.abs(dollars) + ".0" + Math.abs(cents);
+        return rv;
+        
+    }
+    public boolean isNegative()
+    {
+        // T if neg, F if 0 or pos.
+        return dollars + cents < 0;
+    }
+    public boolean isGreaterThan(Money m)
+    {
+        if(dollars * 100 + cents > m.getDollars() * 100 + m.getCents())
+            return true;
+        else
+            return false;
+    }
+    public boolean isLessThan(Money m)
+    {
+        if(dollars < m.getDollars())
+            return true;
+        else if(dollars == m.getDollars() && cents < m.getCents())
+            return true;
+        else
+            return false;       
+    }
+    public void add(Money m)
+    {
+        setDollars(dollars + m.getDollars());
+        setCents(cents + m.getCents());
+    }
+    public void sub(Money m)
+    {
+        setDollars(dollars - m.getDollars());
+        setCents(cents - m.getCents());
+    }
+    public void mult(int multiplier)
+    {
+        setDollars(dollars * multiplier);
+        setCents(cents * multiplier);
+    }
+    public String toEnglish()
+    {
+        String[] onesToTeens = {"Zero","One","Two","Three",
+            "Four","Five","Six","Seven","Eight","Nine",
+            "Ten","Eleven","Twelve","Thirteen","Fourteen",
+            "Fifteen","Sixteen","Seventeen","Eighteen",
+            "Nineteen"};
+        String[] tens = {"","Ten","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"};
+        int d = dollars; // 729
+        String rv = "";
+        
+        if(isNegative())
+        {
+            rv = "Negative ";
+            d = -d;
+        }
+        if(d/100 > 0)
+        {
+            rv = onesToTeens[d/100] + " Hundred ";
+            d = d % 100; // 29
+        }
+        if(d >= 20)
+        {
+            rv += tens[d/10] + " ";
+            d %= 10; // 29 => 9, or 20 => 0
+            if(d==0)
+                rv += " Dollars";
+            else
+                rv += onesToTeens[d%10] + " Dollars";
+        } 
+        else 
+        {
+            // d <20
+            rv += onesToTeens[d] + " Dollars";
+        }
+        if(dollars == 1)
+            rv = "One Dollar";
+        if(dollars == -1)
+            rv = "Negative One Dollar";
+        return rv;
+    }// end toEnglish()
+    
+    public static int round(double a)
+    {
+        return (int) (a + 0.5);
+    }
+    
+    public Money product(double multiplier)
+    {
+        return new Money(0, round(multiplier * (dollars * 100 + cents)));
+    }  
+    
+    public void print()
+    {
+    	System.out.println(toString());
+    }
+} // end class Money
+    
+class Board implements Printable
+{
+   // Instance variables
+   private GamePiece[][] board;
+   private boolean[][] isHidden;
+   // Constructors
+   public Board()
+   {
+       board = null;
+       isHidden = null;
+   }
+   public Board(int rows, int columns)
+   {
+       board = new Card[rows][columns];
+       isHidden = new boolean[rows][columns];
+       unhide();
+   }
+   // Nonstatic methods
+   public void printBoard()
+   {
+       // Print board with row col headers
+       // You may assume board is set up.
+       System.out.print("  ");
+       for(int c=0; c<board[0].length; c++) 
+       {
+           if(c<10)
+               System.out.print("  " + c);
+           else
+               System.out.print(" " + c);
+       }
+       System.out.println();
+       for(int r=0; r<board.length; r++)
+       {
+           System.out.print(r);
+           if(r<10)
+               System.out.print(" ");
+           for(int c=0; c<board[r].length; c++)
+           {
+               if(board[r][c] != null) 
+               {
+                   if(isHidden[r][c])
+                       System.out.print(" ??");
+                   else
+                       System.out.print(" " + board[r][c].toString());
+               }
+               else
+                   System.out.print("   ");
+           }
+           System.out.println();
+       }
+   }
+   public void fillBoard(Deck d)
+   {
+       for(int r=0; r<board.length; r++)
+       {
+           for(int c=0; c<board[r].length; c++)
+           {
+               board[r][c] = d.next();
+           }
+       }
+   }
+   public void unhide()
+   {
+       for(int r=0; r<board.length; r++)
+       {
+           for(int c=0; c<board[r].length; c++)
+           {
+               isHidden[r][c] = false;
+           }
+       }
+   }
+   public void unhide(int row, int column)
+   {
+       isHidden[row][column] = false;
+   }
+   public void hide()
+   {
+       for(int r=0; r<board.length; r++)
+       {
+           for(int c=0; c<board[r].length; c++)
+           {
+               isHidden[r][c] = true;
+           }
+       }
+   }
+   public void hide(int row, int column)
+   {
+       isHidden[row][column] = true;
+   }
+
+   public void place(Card c, int row, int column)
+   {
+       board[row][column] = c;
+   }
+   public Card get(int row, int column)
+   {
+       return (Card)board[row][column];
+   }
+   public Card remove(int row, int column)
+   {
+       Card rv = (Card)board[row][column];
+       board[row][column] = null;
+       return (Card)rv;
+   }
+   public int openSpots()
+   {
+       int rv=0;
+       for(int r=0; r<board.length; r++)
+       {
+           for(int c=0; c<board[r].length; c++)
+           {
+               if(board[r][c]==null)
+                   rv++;
+           }
+       }
+       return rv;
+   }
+   
+   public void print()
+   {
+		printBoard();
+   }
+}
+
+
+class Card extends GamePiece implements Printable
+{
+   // Instance Variables
+   // 1=A, 2-9, 10=X, 11=J, 12=Q, 13=K
+   // Error value = 0 and " " (space, not empty String!)
+   private int face;
+   // 1=S, 2=H, 3=C, 4=D
+   // Error value = 0 and " " (space, not empty String!)
+   private int suit;
+   // Constructors
+   public Card()
+   {
+       face=0;
+       suit=0;
+   }
+   public Card(int face, int suit)
+   {
+       setFace(face);
+       setSuit(suit);
+   }
+   // Getters/Setters
+   public int getFace()
+   {
+       return face;
+   }
+   public void setFace(int newFace)
+   {
+       if(newFace >=1 && newFace <=13)
+           face = newFace;
+       else
+           face = 0;
+   }
+   public int getSuit()
+   {
+       return suit;
+   }
+   public void setSuit(int newSuit)
+   {
+       if(newSuit >=1 && newSuit <=4)
+           suit = newSuit;
+       else
+           suit = 0;
+   }
+
+   // Static methods
+   // Given 1-13, return A-K
+   public static String convertFace(int face)
+   {
+       if(face==1)
+           return "A";
+       if(face==2)
+           return "2";
+       if(face==3)
+           return "3";
+       if(face==4)
+           return "4";
+       if(face==5)
+           return "5";
+       if(face==6)
+           return "6";
+       if(face==7)
+           return "7";
+       if(face==8)
+           return "8";
+       if(face==9)
+           return "9";
+       if(face==10)
+           return "X";
+       if(face==11)
+           return "J";
+       if(face==12)
+           return "Q";
+       if(face==13)
+           return "K";
+       return " ";
+   }
+   // Given A-K, return 1-13
+   public static int convertFace(String face)
+   {
+       if(face.compareTo("A")==0)
+           return 1;
+       if(face.compareTo("2")==0)
+           return 2;
+       if(face.compareTo("3")==0)
+           return 3;
+       if(face.compareTo("4")==0)
+           return 4;
+       if(face.compareTo("5")==0)
+           return 5;
+       if(face.compareTo("6")==0)
+           return 6;
+       if(face.compareTo("7")==0)
+           return 7;
+       if(face.compareTo("8")==0)
+           return 8;
+       if(face.compareTo("9")==0)
+           return 9;
+       if(face.compareTo("X")==0)
+           return 10;
+       if(face.compareTo("J")==0)
+           return 11;
+       if(face.compareTo("Q")==0)
+           return 12;
+       if(face.compareTo("K")==0)
+           return 13;
+       return 0;
+   }
+   // Given 1-4, return SHCD
+   public static String convertSuit(int suit)
+   {
+       if(suit==1)
+           return "S";
+       if(suit==2)
+           return "H";
+       if(suit==3)
+           return "C";
+       if(suit==4)
+           return "D";
+       return " ";
+   }
+   // Given SHCD, return 1-4
+   public static int convertSuit(String suit)
+   {
+       if(suit.compareTo("S")==0)
+           return 1;
+       if(suit.compareTo("H")==0)
+           return 2;
+       if(suit.compareTo("C")==0)
+           return 3;
+       if(suit.compareTo("D")==0)
+           return 4;
+       return 0;
+   }
+
+   // Nonstatic methods
+   // toString() should return a 2 character card.
+   public String toString()
+   {
+       return convertFace(face) + convertSuit(suit);
+   }
+   public boolean equals(Card c)
+   {
+       return c.face == face;
+   }
+   
+   public void print()
+   {
+   		System.out.println(toString());
+   }
+}
+
+class Shape 
+{
+   private final int NUMBER_OF_SIDES;
+   public Shape()
+   {
+        NUMBER_OF_SIDES = 0;
+   }
+   public Shape(int numSides) 
+   {
+       NUMBER_OF_SIDES = numSides;
+   }
+   public int getNumberOfSides()
+   {
+       return NUMBER_OF_SIDES;
+   }
+   public double area() 
+   {
+       return 0;
+   }
+   public double perimeter() 
+   {
+       return 0;
+   }
+   // The toStr() method is necessary so that we can use it
+   // from Shape pointers for all child classes of Shape.
+   // This is the conflict and resolution.
+   public String toString()
+   {
+       return "";
+   }
+}
+
+class Rectangle extends Shape implements Printable
+{
+   private double length;
+   private double width;
+   public Rectangle()
+   {
+       super(4);
+       length = 0;
+       width = 0;
+   }
+   public Rectangle(double l, double w)
+   {
+       super(4);
+       length = l;
+       width = w;
+   }
+   public String toString()
+   {
+       return "Rectangle with 4 sides, length = " + length + " and width = " + width;
+   }
+   public double parentArea() 
+   {
+       return super.area();
+   }
+   public double area() 
+   {
+       return length * width;
+   }
+   public double perimeter()
+   {
+       return length + length + width + width;
+   }
+   
+   public void print()
+   {
+   		System.out.println(toString());
+   }
+}
+
+
+class Deck 
+{
+   // Instance variables
+   private Card[] cards = new Card[52];
+   private int nextCard=0;
+   // Constructors
+   public Deck()
+   {
+       nextCard = 0;
+       for(int i=0; i<52; i++)
+           cards[i] = new Card(i%13+1,i/13+1);
+   }
+   
+   // Nonstatic methods
+   public void shuffle()
+   {
+       Random rand = new Random();
+       int randomIndex=0;
+       Card storage = null;
+       for(int i=0; i<52; i++)
+       {
+           // Find a random card
+           randomIndex = rand.nextInt(52);
+           // Swap the 2 cards
+           storage = cards[i];
+           cards[i] = cards[randomIndex];
+           cards[randomIndex] = storage;
+       }
+   }
+   public void print()
+   {
+       for(int i=0; i<52; i++)
+       {
+           System.out.print(cards[i].toString() + " ");
+       }
+       System.out.println();
+   }
+   public Card next()
+   {
+       // Return next card.
+       Card rv = null;
+       if(nextCard < 52 && nextCard >=0)
+           rv = cards[nextCard];
+       nextCard++;
+       return rv;
+   }
+}
+
+class War
+{
+	public static void play
+	{
+		int scoreA;
+		int scoreB;
+		Board b = new Board();
+		Deck d = new Deck();
+		d.shuffle();
+		
+		for(int i = 0; i < 26; i++)
+		{
+			b.place(d.next(), 0, i);
+		}
+		
+		for(int j = 0; j < 26; j++)
+		{
+			b.place(d.next(), 6, j);
+		}
+		b.hide();
+		b.printBoard();
+		
+		while(countA(b) > 0 && countB(b) > 0)
+		{
+			Card a = b.remove(0, 0);
+			b.place(a, 3, 0);
+			
+			Card b = b.remove(6, 0);
+			b.place(b, 4, 0);
+			
+			pushDown(b);
+			if(a.getFace() > b.getFace())
+			{
+				b.place(b.get(3, 0), 0, 25);
+				b.place(b.get(4, 0), 0, 26);
+				b.pushDown();
+				scoreA++;
+			}
+			
+			if(a.getFace() > b.getFace())
+			{
+				b.place(b.get(3, 0), 6, 25);
+				b.place(b.get(4, 0), 6, 25)
+				b.pushDown();
+				scoreB++;
+			}
+			
+			b.printBoard();
+			pressEnterToContinue();
+		}
+		if(countA > countB)
+		{
+			System.out.println("Congrats!! Player A wins with a score of " + countA);
+		}
+		else
+		{
+			System.out.println("Congrats!! Player B wins with a score of " + countB);
+		}
+		
+		
+	}
+	public static int countA(Board b);
+	{
+		int rV = 0;
+		for(int i = 0; i < 26; i++)
+		{
+			if(b.get(1, i) != null)
+			{
+				rV++;
+			}
+		}
+		return rV;
+		
+	}
+	public static int countB(Board b);
+	{
+		int rV = 0;
+		for(int i = 0; i < 26; i++)
+		{
+			if(b.get(6, i) != null)
+			{
+				rV++;
+			}
+		}
+		return rV;
+	}
+	public static void pushDown(Board b);
+	{
+		for(int i= 0; i < 26; i++)
+		{
+			b.place(b.remove(0, i), 0, i);
+		}
+		b.place(b.remove(0, i), 0, 25;)
+		
+		for(int i= 0; i < 26; i++)
+		{
+			b.place(b.remove(0, i), 6, i);
+		}
+		b.place(b.remove(0, i), 6, 25;)
+	}
+	
+	public static void pressEnterToContinue()
+	{
+		System.out.println("Press enter to continue...");
+		try
+		{
+			System.in.read();
+		}
+		catch(Exception e)
+		{
+			
+		}
+	}
+}
+
+class Concentration
+{
+
+   // newBoard() should return a new Board that is already set up to play concentration.
+   // IE, make, shuffle, deal a deck. Etc.
+   //Class Variables
+   private static String turn;
+   private static int A = 0;
+   private static int B = 0;
+   
+   //Other Methods
+   public static Board newBoard()
+   {
+       // Complete this code.
+       Deck d = new Deck();
+       Board b = new Board();
+       d.shuffle();
+       b.fillBoard(d);
+       b.hide();
+       return b;
+   }
+   
+   // Things to consider:
+   // Keep track of whose turn it is, playerA or B.
+   // Keep track of score = number of matches.
+   // Play as long as there are cards on the board.
+   // If player matches, they get to go again.
+   public static void play()
+   {
+       Board b = newBoard();
+       Scanner s = new Scanner(System.in);
+       while(b.openSpots() > 0)
+       {
+           System.out.println("Player A's score = " + A);
+           System.out.println("Player B's score = " + B);
+           System.out.println("Player " + turn + "'s turn");
+           b.printBoard();
+           System.out.println("Enter Row Number: ");
+           int row = s.nextInt();
+           System.out.println("Enter Column Number: ");
+           int column = s.nextInt();
+           b.unhide(row,column);
+           
+           b.printBoard();
+           System.out.println();
+           System.out.println("Enter Row Number: ");
+           int row1 = s.nextInt();
+           System.out.println("Enter Column Number: ");
+           int column1 = s.nextInt();
+           b.unhide(row1, column1);
+           b.printBoard();
+           
+           if(b.get(row, column) = b.get(row1, column1))
+           {
+           		b.remove(row, column);
+           		b.remove(row1, column1);
+           		System.out.println("Its a match!");
+           		if(turn.compareTo("A");
+           		{
+           			A++;
+           		}
+           		else
+           		{
+           			B++;
+           		}
+           }
+           else
+           {
+           		System.out.println("Not a match");
+           }
+           
+       }
+   } // end play()
+   
+   
+   public static void pressEnterToContinue()
+   {
+       // Complete this code.
+       System.out.println("Press enter to continue.");
+       try
+       {
+           System.in.read();
+       }
+       catch (Exception e)
+       {
+
+       }
+   }
+}
