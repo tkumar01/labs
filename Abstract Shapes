@@ -1,0 +1,152 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Ideone
+{
+	public static void main (String[] args)
+	{
+		// your code goes here
+	}
+}
+
+abstract class Shape
+{
+	private final int NUMBER_OF_SIDES;
+	
+	public Shape()
+	{
+		
+	}
+	public Shape(int sides)
+	{
+		NUMBER_OF_SIDES = sides;
+	}
+	public abstract double area();
+	public abstract double perimeter();
+	
+	public String toStr()
+	{
+		return "Shape with " + NUMBER_OF_SIDES + " sides";
+	}
+}
+
+
+abstract class Quadrilateral extends Shape
+{
+	private String a, b, c, d;
+	
+	public Quadrilateral()
+	{
+		super(0);
+	}
+	public Quadrilateral(double nA, double nB, double nC, double nD)
+	{
+		super(4);
+		sides = a + ", " + b ", " + c + ", " + d;
+	}
+	
+	public double getA()
+	{
+		int firstComma = sides.indexOf(",");
+		String subStr = sides.substring(firstComma + 1);
+		return Double.parseDouble(subStr);
+	}
+	public double setA(double newA)
+	{
+		int firstComma = sides.indexOf(", ");
+		String r = sides.substring(firstComma + 1);
+		sides = newA + r;
+	}
+	
+	public String getB()
+	{
+		int firstComma = sides.indexOf(",");
+		String subStr = sides.substring(firstComma + 1);
+		firstComma = subStr.substring(0, firstComma);
+		return Double.parseDouble(subStr);
+	}
+	public void setB(double newB)
+	{
+		String l, r, substr;
+		int firstComma = sides.indexOf(",");
+		l = sides.substring(0, firstComma + 1);
+		substr = sides.substring(firstComma + 1)
+		firstComma = substr.indexOf(", ");
+		r = substr.substring(firstComma);
+		sides = l + newB + r;
+	}
+	
+	public double getC()
+	{
+		int firstComma = sides.indexOf(",");
+		String subStr =  sides.substring(firstComma + 1);
+		int secondComma = subStr.indexOf(", ");
+		subStr = subStr.substring(secondComma);
+		return Double.parseDouble(subStr);
+	}
+	public void setC(double newC)
+	{
+		c = newC;
+	}
+	
+	public double getD()
+	{
+		return d;
+	}
+	public void setD(double newD)
+	{
+		d = newD;
+	}
+	
+	public double perimeter()
+	{
+		return getA() + getB() + getC() + getD();
+	}
+	
+}
+
+
+class Rectangle extends Shape
+{
+	public Rectangle()
+	{
+		super();
+	}
+	public Rectangle(double w, double h)
+	{
+		this.setWidth(w);
+		this.setHeight(h);
+	}
+	
+	public double getWidth()
+	{
+		return super.a;
+	}
+	public void setWidth(double newW)
+	{
+		super.a = newW;
+	}
+	public double getHeight()
+	{
+		return super.b;
+	}
+	public void setHeight(double newH)
+	{
+		super.b = newH;
+	}
+	
+	public static String toStr()
+	{
+		return "Rectangle with 4 sides, length = " + getHeight + ", width = " + getWidth();
+	}
+	
+	public double area()
+	{
+		return (super.a * super.b);
+	}
+	public double perimeter()
+	{
+		return (2*super.a) + (2*super.b);
+	}
+}
